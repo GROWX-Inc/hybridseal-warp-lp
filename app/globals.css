@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-base: #04050a;
+  --color-cyan: #3fe3ff;
+  --color-gold: #e8c56b;
+  --color-violet: #8b6cff;
+}
+
+html {
+  /* Lenis制御。ネイティブのsmoothは無効化しておく */
+  scroll-behavior: auto;
+}
+
+body {
+  background-color: var(--color-base);
+  color: #e9edf5;
+  font-family: var(--font-sans), "Noto Sans JP", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* ===== ブラックアウト事故防止の最重要ルール =====
+   コンテンツは常に opacity:1 で表示する。
+   reveal演出は JS(GSAP) が「上乗せ」で動かすのみ。
+   万一スクリプトが失敗・無効でも、ここで定義した表示状態が残る。 */
+.reveal {
+  opacity: 1;
+}
+
+/* JSが有効でモーションを許可する場合のみ、JS側で .reveal-armed を付与し
+   初期状態を一時的に隠す（GSAPが必ず opacity:1 へ戻す & 安全タイマーあり）。 */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-armed {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ユーティリティ */
+.text-glow-cyan {
+  text-shadow: 0 0 18px rgba(63, 227, 255, 0.55), 0 0 4px rgba(63, 227, 255, 0.8);
+}
+.text-glow-gold {
+  text-shadow: 0 0 18px rgba(232, 197, 107, 0.5), 0 0 4px rgba(232, 197, 107, 0.75);
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(63, 227, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(63, 227, 255, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* 低スペック端末向け：CSSのみで描く簡易星空フォールバック */
+.starfield-fallback {
+  background:
+    radial-gradient(1px 1px at 20% 30%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 70% 60%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1.5px 1.5px at 40% 80%, rgba(124, 236, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 85% 20%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1.5px 1.5px at 55% 15%, rgba(232, 197, 107, 0.6), transparent),
+    radial-gradient(1px 1px at 10% 70%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(circle at 50% 0%, rgba(63, 227, 255, 0.12), transparent 60%),
+    var(--color-base);
+}
+
+::selection {
+  background: rgba(63, 227, 255, 0.3);
+  color: #ffffff;
+}
